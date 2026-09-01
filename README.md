@@ -64,8 +64,9 @@ communication-evaluation-platform/
 │
 ├── PROJECT_REPORT.md
 └── README.md
+```
 
-How It Works
+## How It Works
 
 The application follows this flow:
 
