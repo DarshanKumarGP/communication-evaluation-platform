@@ -30,6 +30,7 @@ FRONTEND_DIR = os.path.join(BASE_DIR, "..", "frontend")
 
 app = Flask(__name__, static_folder=None)
 
+database.init_db()
 
 # ---------------------------------------------------------------------
 # Minimal CORS support (no flask_cors dependency needed)
