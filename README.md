@@ -56,7 +56,6 @@ communication-evaluation-platform/
 │   │   ├── test_api.py
 │   │   └── test_scoring.py
 │   └── data/
-│       └── assessment.db
 │
 ├── frontend/
 │   ├── index.html
