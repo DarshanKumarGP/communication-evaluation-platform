@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Communication Assessment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- ============ SCREEN: LANDING ============ -->
+  <section class="screen" id="screen-landing" data-active="true">
+    <div class="landing">
+      <div class="landing__mark" aria-hidden="true">
+        <svg viewBox="0 0 64 40" class="waveform-mark">
+          <rect x="0"  y="16" width="4" height="8"  rx="2"/>
+          <rect x="8"  y="10" width="4" height="20" rx="2"/>
+          <rect x="16" y="2"  width="4" height="36" rx="2"/>
+          <rect x="24" y="12" width="4" height="16" rx="2"/>
+          <rect x="32" y="6"  width="4" height="28" rx="2"/>
+          <rect x="40" y="14" width="4" height="12" rx="2"/>
+          <rect x="48" y="0"  width="4" height="40" rx="2"/>
+          <rect x="56" y="10" width="4" height="20" rx="2"/>
+        </svg>
+      </div>
+      <h1 class="landing__title">Communication Assessment</h1>
+      <p class="landing__sub">
+        A short conversation with an interviewer chatbot. It takes about
+        5&ndash;10 minutes and covers two parts: introducing yourself, and
+        handling a realistic vendor conversation. You can speak your
+        answers or type them.
+      </p>
+
+      <form class="landing__form" id="start-form">
+        <label class="field">
+          <span class="field__label">Your name</span>
+          <input type="text" id="candidate-name" placeholder="e.g. Ananya Rao" autocomplete="name" />
+        </label>
+
+        <label class="field">
+          <span class="field__label">Spoken-language accent (for speech recognition)</span>
+          <select id="accent-select" class="field__select">
+            <option value="en-IN" selected>English (India)</option>
+            <option value="en-US">English (US)</option>
+            <option value="en-GB">English (UK)</option>
+          </select>
+        </label>
+
+        <button type="submit" class="btn btn--primary btn--large" id="start-btn">
+          Start assessment
+        </button>
+      </form>
+
+      <p class="landing__note" id="mic-support-note"></p>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN: ASSESSMENT ============ -->
+  <section class="screen" id="screen-assessment">
+    <header class="topbar">
+      <div class="topbar__progress" id="stage-progress" aria-label="Assessment progress"></div>
+      <div class="topbar__timer" id="elapsed-timer">00:00</div>
+    </header>
+
+    <div class="chat" id="chat-log" role="log" aria-live="polite"></div>
+
+    <footer class="composer">
+      <div class="composer__meter" id="meter-wrap" hidden>
+        <div class="meter">
+          <div class="meter__fill" id="meter-fill"></div>
+        </div>
+        <span class="meter__label" id="record-time">0.0s</span>
+      </div>
+
+      <div class="composer__row">
+        <button type="button" class="mic-btn" id="mic-btn" aria-pressed="false">
+          <svg viewBox="0 0 24 24" class="mic-icon" aria-hidden="true">
+            <path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Z"/>
+            <path d="M19 11a7 7 0 0 1-14 0M12 18v3" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          </svg>
+          <span id="mic-btn-label">Speak answer</span>
+        </button>
+
+        <textarea id="text-input" class="text-input" rows="2" placeholder="...or type your answer here"></textarea>
+
+        <button type="button" class="btn btn--primary" id="send-btn">Send</button>
+      </div>
+      <p class="composer__hint" id="live-transcript-hint"></p>
+    </footer>
+  </section>
+
+  <!-- ============ SCREEN: RESULT ============ -->
+  <section class="screen" id="screen-result">
+    <div class="result">
+      <h1 class="result__title">Assessment complete</h1>
+      <p class="result__candidate" id="result-candidate"></p>
+
+      <div class="result__overall">
+        <div class="result__ring" id="overall-ring">
+          <span id="overall-pct">--%</span>
+        </div>
+        <div class="result__overall-text">
+          <span class="result__overall-label">Overall communication score</span>
+          <span class="result__overall-score" id="overall-score-30">-- / 30</span>
+        </div>
+      </div>
+
+      <div class="scorebars" id="scorebars"></div>
+
+      <div class="feedback">
+        <div class="feedback__col">
+          <h2>Strengths</h2>
+          <ul id="strengths-list"></ul>
+        </div>
+        <div class="feedback__col">
+          <h2>Areas to improve</h2>
+          <ul id="improvements-list"></ul>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn--ghost" id="toggle-transcript-btn">
+        Show full transcript
+      </button>
+      <div class="transcript" id="transcript-log" hidden></div>
+
+      <div class="result__actions">
+        <button type="button" class="btn btn--primary" id="restart-btn">Start a new assessment</button>
+        <button type="button" class="btn btn--ghost" id="recruiter-view-btn">Recruiter view</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN: RECRUITER DASHBOARD ============ -->
+  <section class="screen" id="screen-recruiter">
+    <div class="recruiter">
+      <div class="recruiter__head">
+        <h1>Recruiter dashboard</h1>
+        <button type="button" class="btn btn--ghost" id="recruiter-back-btn">Back</button>
+      </div>
+      <p class="recruiter__sub">All completed candidate sessions on this server.</p>
+      <table class="recruiter__table" id="recruiter-table">
+        <thead>
+          <tr><th>Candidate</th><th>Status</th><th>Started</th><th></th></tr>
+        </thead>
+        <tbody id="recruiter-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
